@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Quoted
+{% endblock %}
+
+<!-- form for stock lookup -->
+{% block main %}
+    <header>
+        The quote for {{ symbol.name }} ({{ symbol.symbol }}) is {{ symbol.price | usd }}.
+    </header>
+{% endblock %}

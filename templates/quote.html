@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Quote
+{% endblock %}
+
+<!-- form for stock lookup -->
+{% block main %}
+    <header>Look up a stock's value. Please input the stock ticker symbol.
+        <p></p>
+    </header>
+    <form action="/quote" method="post">
+        <div class="form-group">
+            <!-- form input: symbol the user wants to look up -->
+            <input autocomplete="off" autofocus class="form-control" name="symbol" placeholder="STCK" type="text"/>
+        </div>
+        <button class="btn btn-primary" type="submit">Quote</button>
+    </form>
+{% endblock %}

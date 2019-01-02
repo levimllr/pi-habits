@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Index
+{% endblock %}
+
+<!-- table of user's portfolio for stock lookup -->
+{% block main %}
+    <header>
+        Your portfolio. Please reflect on your successes and failures.
+        <p></p>
+    </header>
+    <table class="table table-bordered">
+        <thead>
+            <th>Stock</th>
+            <th>Shares</th>
+            <th>Current Price</th>
+            <th>Total Value</th>
+        </thead>
+
+        <!-- which variables do you need to pass to index.html? -->
+
+        <tbody>
+            {% for item in portfolio %}
+            <tr>
+                <td>{{ item.what }}</td>
+                <td>{{ item.allhowmany }}</td>
+                <td>{{ item.price }}</td>
+                <td>{{ item.total }} </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <section>Your current cash balance is {{ currentcash }}.</section>
+    <section>The current value of your stocks is {{ stocktotal }}.</section>
+    <section>Your total value of cash and stocks is {{ totalvalue }}. </section>
+
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Sell
+{% endblock %}
+
+<!-- form for stock lookup -->
+{% block main %}
+    <header>
+        Sell stock. Please select the stock ticker symbol and number of shares you want to be rid of.
+        <p></p>
+    </header>
+    <form action="/sell" method="post">
+        <div class="form-group">
+        <select class="form-control" name="symbol" placeholder="STCK">
+            {% for item in portfolio %}
+            <option value="{{ item.what }}">{{ item.what }}</option>
+            {% endfor %}
+        </select>
+        </div>
+        <div class="form-group">
+            <input class="form-control" name="shares" placeholder="#" type="number" min="1"/>
+        </div>
+        <button class="btn btn-primary" type="submit">Sell</button>
+    </form>
+{% endblock %}
