@@ -4,35 +4,54 @@
     Index
 {% endblock %}
 
-<!-- table of user's portfolio for stock lookup -->
 {% block main %}
-    <header>
-        Your portfolio. Please reflect on your successes and failures.
-        <p></p>
-    </header>
-    <table class="table table-bordered">
-        <thead>
-            <th>Stock</th>
-            <th>Shares</th>
-            <th>Current Price</th>
-            <th>Total Value</th>
-        </thead>
+    <body>
+    <div class="container">
+        <div class="page-header">
+            <h2>Hobbit Habits</h2>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><span class="glyphicon glyphicon-equalizer"></span>Eating</div>
+                    <div class="panel-body">
 
-        <!-- which variables do you need to pass to index.html? -->
+                        <div id="cal-heatmap">
+                        </div>
+                    </div>
+                    <div id="heatmap-navigation" class="container">
+                            <button id="heatmap-previous" class="btn btn-primary btn-xs">a</button>
+                            <button id="heatmap-next" class="btn btn-primary btn-xs">b</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        <tbody>
-            {% for item in portfolio %}
-            <tr>
-                <td>{{ item.what }}</td>
-                <td>{{ item.allhowmany }}</td>
-                <td>{{ item.price }}</td>
-                <td>{{ item.total }} </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <section>Your current cash balance is {{ currentcash }}.</section>
-    <section>The current value of your stocks is {{ stocktotal }}.</section>
-    <section>Your total value of cash and stocks is {{ totalvalue }}. </section>
+        <div id="cal-heatmap"></div>
+        <script type="text/javascript">
+            /* global CalHeatMap */
+	        var cal = new CalHeatMap();
+    	    cal.init({
+    	        domain: "month",
+                subDomain: "x_day",
+                range: 2,
+                cellSize: 20,
+                cellRadius: 3,
+                weekStartOnMonday: false,
+                verticalOrientation: true,
+                domainDynamicDimension: false,
+                displayLegend: true,
+                label: {
+		            position: "right",
+		            width: 150,
+		            rotate: "left"
+	                },
+	            previousSelector: "#heatmap-previous",
+                nextSelector: "#heatmap-next"
+    	    });
+        </script>
+
+</body>
+
 
 {% endblock %}
