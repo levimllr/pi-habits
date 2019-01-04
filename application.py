@@ -53,12 +53,12 @@ def add():
     if request.method == "POST":
 
         habit = request.form.get("habit")
-        frequency = request.form.get("howmuch")
+        frequency = int(request.form.get("howmuch"))
         print(habit)
         print(frequency)
 
-        db.execute("INSERT INTO habits (habitid, habit, howmuch) VALUES (:habitid, :habit, :howmuch)",
-                       habitid=session["user_id"], habit=habit, howmuch=frequency)
+        db.execute("INSERT INTO habits (userid, habit, frequency) VALUES (:userid, :habit, :frequency)",
+                       userid=session["user_id"], habit=habit, frequency=frequency)
 
         # Redirect user to home page
         return redirect("/")
@@ -66,6 +66,24 @@ def add():
     else:
         return render_template("add.html")
 
+@app.route("/remove", methods=["GET", "POST"])
+@login_required
+def remove():
+    """Remove habits"""
+
+    if request.method == "POST":
+
+        habit = request.form.get("habit")
+
+        db.execute("DELETE FROM habits WHERE userid = :user_id AND habit = :habit", user_id=session["user_id"], habit=habit)
+
+        # Redirect user to home page
+        return redirect("/")
+
+    else:
+        habits = db.execute("SELECT * FROM habits WHERE userid = :user_id", user_id=session["user_id"])
+        print(habits)
+        return render_template("remove.html", habits=habits)
 
 @app.route("/history")
 @login_required
