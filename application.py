@@ -1,7 +1,8 @@
 import os
+import re
 
 from cs50 import SQL
-from flask import Flask, flash, redirect, render_template, request, session
+from flask import Flask, flash, jsonify, redirect, render_template, request, session
 from flask_session import Session
 from tempfile import mkdtemp
 from werkzeug.exceptions import default_exceptions
@@ -39,97 +40,31 @@ def index():
     """Show habit heatmaps"""
 
     userrows = db.execute("SELECT * FROM users WHERE id = :user_id", user_id=session["user_id"])
-    portfolio = db.execute(
-        "SELECT what, SUM(howmany) AS allhowmany FROM transactions WHERE who = :user_id GROUP BY what", user_id=session["user_id"])
-    # print(portfolio[0].get('what'))
+    username = userrows[0]['username']
 
-    totalvalue = 0
-
-    for i in range(0, len(portfolio)):
-        ticker = portfolio[i].get('what')
-        # print(ticker)
-        symbol = lookup(ticker)
-        # print(symbol)
-        currentprice = symbol["price"]
-        portfolio[i]["price"] = usd(currentprice)
-        portfolio[i]["total"] = usd(portfolio[i]["allhowmany"] * currentprice)
-        totalvalue += portfolio[i]["allhowmany"] * currentprice
-
-    trace = 0
-    for j in portfolio:
-        if j["allhowmany"] == 0:
-            del portfolio[trace]
-        trace += 1
-
-    currentcash = userrows[0]["cash"]
-    stocktotal = totalvalue
-    totalvalue += currentcash
-
-    # print(currentcash)
-
-    return render_template("index.html", currentcash=usd(currentcash), portfolio=portfolio, totalvalue=usd(totalvalue), stocktotal=usd(stocktotal))
-    # return apology("TODO")
+    return render_template("index.html", username=username)
 
 
-@app.route("/buy", methods=["GET", "POST"])
+@app.route("/add", methods=["GET", "POST"])
 @login_required
-def buy():
-    """Buy shares of stock"""
+def add():
+    """Add habits to track"""
 
     if request.method == "POST":
 
-        try:
-            symbol = lookup(request.form.get("symbol"))
-            name = symbol["name"]
-            ticker = symbol["symbol"]
-            price = symbol["price"]
-        except:
-            return apology("must provide valid stock ticker symbol", 400)
+        habit = request.form.get("habit")
+        frequency = request.form.get("howmuch")
+        print(habit)
+        print(frequency)
 
-        try:
-            shares = int(request.form.get("shares"))
-        except:
-            return apology("must provide valid number of shares", 400)
-
-        if not symbol or symbol == None:
-            return apology("must provide valid stock ticker symbol", 400)
-        if shares <= 0:
-            return apology("must provide valid number of shares", 400)
-
-        cost = price * shares
-        # print(symbol)
-        # print(ticker)
-        # print(shares)
-        # print(cost)
-
-        # Ensure stock ticker symbol was submitted.
-        # if not symbol or symbol == None:
-        #    return apology("must provide valid stock ticker symbol", 400)
-
-        # Ensure valid number of shares was submitted.
-        # if not shares or shares <= 0 or not isinstance(shares, int):
-        #    return apology("must provide valid number of shares", 400)
-
-        # Get the user's cash.
-        rows = db.execute("SELECT cash FROM users WHERE id = :user_id", user_id=session["user_id"])
-        cash = rows[0]["cash"]
-        # print(cash)
-
-        remainder = round(cash - cost, 2)
-
-        # Ensure the user can afford the stock.
-        if remainder > 0:
-            db.execute("UPDATE users SET cash = :remainder WHERE id = :user_id", remainder=remainder, user_id=session["user_id"])
-            db.execute("INSERT INTO transactions (who, what, howmany, whatprice) VALUES (:who, :what, :howmany, :whatprice)",
-                       who=session["user_id"], what=ticker, howmany=shares, whatprice=price)
-        else:
-            return apology("you broke as hell")
+        db.execute("INSERT INTO habits (habitid, habit, howmuch) VALUES (:habitid, :habit, :howmuch)",
+                       habitid=session["user_id"], habit=habit, howmuch=frequency)
 
         # Redirect user to home page
         return redirect("/")
 
     else:
-        return render_template("buy.html")
+        return render_template("add.html")
 
 
 @app.route("/history")
@@ -265,62 +200,6 @@ def register():
     # User reached route via GET (as by clicking a link or via redirect)
     else:
         return render_template("register.html")
-
-
-@app.route("/sell", methods=["GET", "POST"])
-@login_required
-def sell():
-    """Sell shares of stock"""
-
-    if request.method == "POST":
-
-        symbol = lookup(request.form.get("symbol"))
-        name = symbol["name"]
-        ticker = symbol["symbol"]
-        price = symbol["price"]
-        try:
-            shares = int(request.form.get("shares"))
-        except:
-            return apology("must provide valid number of shares", 400)
-
-        if shares <= 0:
-            return apology("must provide valid number of shares", 400)
-
-        sale = price * shares
-
-        # Ensure stock ticker symbol was submitted.
-        if not symbol or symbol == None:
-            return apology("must provide valid stock ticker symbol", 400)
-
-        # Get the user's shares.
-        usershares = db.execute(
-            "SELECT SUM(howmany) AS allhowmany FROM transactions WHERE who = :user_id and what = :what GROUP BY what", user_id=session["user_id"], what=ticker)
-        presentshares = usershares[0]["allhowmany"]
-        # print(presentshares)
-        # print(shares)
-
-        if presentshares < shares:
-            return apology("try selling fewer shares", 400)
-
-        # Get the user's cash.
-        rows = db.execute("SELECT cash FROM users WHERE id = :user_id", user_id=session["user_id"])
-        cash = rows[0]["cash"]
-
-        # Figure the user's new balance.
-        newbalance = round(cash + sale, 2)
-
-        # Update the user's account.
-        db.execute("UPDATE users SET cash = :newbalance WHERE id = :user_id", newbalance=newbalance, user_id=session["user_id"])
-        db.execute("INSERT INTO transactions (who, what, howmany, whatprice) VALUES (:who, :what, :howmany, :whatprice)",
-                   who=session["user_id"], what=ticker, howmany=-shares, whatprice=price)
-
-        # Redirect user to home page
-        return redirect("/")
-
-    else:
-        portfolio = db.execute(
-            "SELECT what, SUM(howmany) AS allhowmany FROM transactions WHERE who = :user_id GROUP BY what", user_id=session["user_id"])
-        return render_template("sell.html", portfolio=portfolio)
 
 
 def errorhandler(e):

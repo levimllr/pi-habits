@@ -1,16 +1,16 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    Buy
+    Manage
 {% endblock %}
 
 <!-- form for stock lookup -->
 {% block main %}
     <header>
-        Purchase stock. Please input the stock ticker symbol and number of shares desired.
+        Add or remove habits here.
         <p></p>
     </header>
-    <form action="/buy" method="post">
+    <form action="/manage" method="post">
         <div class="form-group">
             <!-- form input: symbol the user wants to look up -->
             <input autocomplete="off" autofocus class="form-control" name="symbol" placeholder="STCK" type="text"/>

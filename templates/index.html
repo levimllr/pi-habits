@@ -5,53 +5,43 @@
 {% endblock %}
 
 {% block main %}
-    <body>
-    <div class="container">
-        <div class="page-header">
-            <h2>Hobbit Habits</h2>
+    <header>Welcome back, {{ username }}! Way to develop new habits!</header>
+
+    <h4>Eating</h4>
+    <div class="panel-body">
+        <div id="cal-heatmap">
         </div>
-        <div class="row">
-            <div class="col-lg-6">
-                <div class="panel panel-default">
-                    <div class="panel-heading"><span class="glyphicon glyphicon-equalizer"></span>Eating</div>
-                    <div class="panel-body">
+    </div>
+    <p></p>
+    <div id="heatmap-navigation">
+        <button id="heatmap-previous" type="button" class="btn btn-info btn-sm"><-</button>
+        <button id="heatmap-next" type="button" class="btn btn-info btn-sm">-></button>
+    </div>
 
-                        <div id="cal-heatmap">
-                        </div>
-                    </div>
-                    <div id="heatmap-navigation" class="container">
-                            <button id="heatmap-previous" class="btn btn-primary btn-xs">a</button>
-                            <button id="heatmap-next" class="btn btn-primary btn-xs">b</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div id="cal-heatmap"></div>
+    <script type="text/javascript">
+        /* global CalHeatMap */
+        var cal = new CalHeatMap();
+	    cal.init({
+	        domain: "month",
+            subDomain: "x_day",
+            range: 2,
+            cellSize: 20,
+            cellRadius: 3,
+            weekStartOnMonday: false,
+            verticalOrientation: true,
+            domainDynamicDimension: false,
+            displayLegend: true,
+            label: {
+	            position: "right",
+	            width: 150,
+	            rotate: "left"
+                },
+            previousSelector: "#heatmap-previous",
+            nextSelector: "#heatmap-next"
+	    });
+    </script>
 
-        <div id="cal-heatmap"></div>
-        <script type="text/javascript">
-            /* global CalHeatMap */
-	        var cal = new CalHeatMap();
-    	    cal.init({
-    	        domain: "month",
-                subDomain: "x_day",
-                range: 2,
-                cellSize: 20,
-                cellRadius: 3,
-                weekStartOnMonday: false,
-                verticalOrientation: true,
-                domainDynamicDimension: false,
-                displayLegend: true,
-                label: {
-		            position: "right",
-		            width: 150,
-		            rotate: "left"
-	                },
-	            previousSelector: "#heatmap-previous",
-                nextSelector: "#heatmap-next"
-    	    });
-        </script>
-
-</body>
-
+<a href="/add">Add</a> or <a href="/remove">remove</a> habits.
 
 {% endblock %}
