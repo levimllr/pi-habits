@@ -24,19 +24,19 @@
         var cal = new CalHeatMap();
 	    cal.init({
 	        domain: "month",
-            subDomain: "x_day",
+            subDomain: "day",
             range: 2,
             cellSize: 20,
-            cellRadius: 3,
+            cellRadius: 2,
             weekStartOnMonday: false,
-            verticalOrientation: true,
-            domainDynamicDimension: false,
+            verticalOrientation: false,
+            domainDynamicDimension: true,
             displayLegend: true,
-            label: {
+            /* label: {
 	            position: "right",
 	            width: 150,
 	            rotate: "left"
-                },
+                }, */
             previousSelector: "#heatmap-previous",
             nextSelector: "#heatmap-next"
 	    });
