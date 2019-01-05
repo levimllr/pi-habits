@@ -25,7 +25,7 @@
 	    cal.init({
 	        domain: "month",
             subDomain: "day",
-            range: 2,
+            range: 2, legend: [2, 3, 5, 6],
             cellSize: 20,
             cellRadius: 2,
             weekStartOnMonday: false,
@@ -38,10 +38,11 @@
 	            rotate: "left"
                 }, */
             previousSelector: "#heatmap-previous",
-            nextSelector: "#heatmap-next"
+            nextSelector: "#heatmap-next",
+            data: {'1546300800': 4, '1546387200': 5, '1546473600': 6, '1546560000': 2}
 	    });
     </script>
 
-<a href="/add">Add</a> or <a href="/remove">remove</a> habits.
+<a href="/add">Add</a>, <a href="/remove">remove</a>, or <a href="/update">update</a> habits.
 
 {% endblock %}

@@ -2,6 +2,7 @@ import os
 import re
 
 from cs50 import SQL
+from datetime import datetime, timedelta
 from flask import Flask, flash, jsonify, redirect, render_template, request, session
 from flask_session import Session
 from tempfile import mkdtemp
@@ -42,7 +43,18 @@ def index():
     userrows = db.execute("SELECT * FROM users WHERE id = :user_id", user_id=session["user_id"])
     username = userrows[0]['username']
 
-    return render_template("index.html", username=username)
+    activityrows = db.execute("SELECT * FROM activity WHERE userid = :userid", userid=session["user_id"])
+    print(activityrows)
+
+    activity_dict = {}
+    for i in activityrows:
+        activity_dict[i["when"]] = i["howmuch"]
+    print(activity_dict)
+
+    jsactivity = jsonify(activity_dict)
+    print(jsactivity)
+
+    return render_template("index.html", username=username, jsactivity=jsactivity)
 
 
 @app.route("/add", methods=["GET", "POST"])
@@ -84,6 +96,30 @@ def remove():
         habits = db.execute("SELECT * FROM habits WHERE userid = :user_id", user_id=session["user_id"])
         print(habits)
         return render_template("remove.html", habits=habits)
+
+@app.route("/update", methods=["GET", "POST"])
+@login_required
+def update():
+    """Update habits"""
+
+    if request.method == "POST":
+
+        habitinfo = db.execute("SELECT * FROM habits WHERE userid = :user_id", user_id=session["user_id"])
+        habit = habitinfo[0]["habit"]
+
+        howmuch = int(request.form.get("howmuch"))
+        print(howmuch)
+
+        db.execute("INSERT INTO activity (userid, habit, howmuch) VALUES (:userid, :habit, :howmuch)",
+                userid=session["user_id"], habit=habit, howmuch=howmuch)
+
+        # Redirect user to home page
+        return redirect("/")
+
+    else:
+        habits = db.execute("SELECT * FROM habits WHERE userid = :user_id", user_id=session["user_id"])
+        print(habits)
+        return render_template("update.html", habits=habits)
 
 @app.route("/history")
 @login_required
