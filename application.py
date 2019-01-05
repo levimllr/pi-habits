@@ -1,8 +1,9 @@
 import os
 import re
+import time
+import calendar
 
 from cs50 import SQL
-from datetime import datetime, timedelta
 from flask import Flask, flash, jsonify, redirect, render_template, request, session
 from flask_session import Session
 from tempfile import mkdtemp
@@ -44,17 +45,18 @@ def index():
     username = userrows[0]['username']
 
     activityrows = db.execute("SELECT * FROM activity WHERE userid = :userid", userid=session["user_id"])
+
     print(activityrows)
 
     activity_dict = {}
     for i in activityrows:
-        activity_dict[i["when"]] = i["howmuch"]
+        activity_dict[str(i["time"])] = i["howmuch"]
     print(activity_dict)
 
     jsactivity = jsonify(activity_dict)
     print(jsactivity)
 
-    return render_template("index.html", username=username, jsactivity=jsactivity)
+    return render_template("index.html", username=username, activity_dict=activity_dict)
 
 
 @app.route("/add", methods=["GET", "POST"])
@@ -110,7 +112,7 @@ def update():
         howmuch = int(request.form.get("howmuch"))
         print(howmuch)
 
-        db.execute("INSERT INTO activity (userid, habit, howmuch) VALUES (:userid, :habit, :howmuch)",
+        db.execute("INSERT INTO activity (userid, habit, howmuch, time) VALUES (:userid, :habit, :howmuch, UNIX_TIMESTAMP(now))",
                 userid=session["user_id"], habit=habit, howmuch=howmuch)
 
         # Redirect user to home page
