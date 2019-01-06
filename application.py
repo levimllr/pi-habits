@@ -112,8 +112,11 @@ def update():
         howmuch = int(request.form.get("howmuch"))
         print(howmuch)
 
-        db.execute("INSERT INTO activity (userid, habit, howmuch, time) VALUES (:userid, :habit, :howmuch, UNIX_TIMESTAMP(now))",
-                userid=session["user_id"], habit=habit, howmuch=howmuch)
+        now = int(time.time())
+        print(time)
+
+        db.execute("INSERT INTO activity (userid, habit, howmuch, time) VALUES (:userid, :habit, :howmuch, :time)",
+                userid=session["user_id"], habit=habit, howmuch=howmuch, time=now)
 
         # Redirect user to home page
         return redirect("/")
