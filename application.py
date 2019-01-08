@@ -10,7 +10,7 @@ from tempfile import mkdtemp
 from werkzeug.exceptions import default_exceptions
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from helpers import apology, login_required, lookup, usd
+from helpers import apology, login_required
 
 # Configure application
 app = Flask(__name__)
@@ -33,8 +33,9 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 # Configure CS50 Library to use SQLite database
+# Change this URL to the absolute or relative directory on your server!!!
+# Ex: "sqlite:////home/pi/pi-habits/habits.db"
 db = SQL("sqlite:///habits.db")
-
 
 @app.route("/")
 @login_required
@@ -166,7 +167,7 @@ def login():
 
         # Query database for username
         rows = db.execute("SELECT * FROM users WHERE username = :username",
-                          username=request.form.get("username"))
+                        username = request.form.get("username"))
 
         # Ensure username exists and password is correct
         if len(rows) != 1 or not check_password_hash(rows[0]["hash"], request.form.get("password")):
