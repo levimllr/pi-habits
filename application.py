@@ -2,6 +2,7 @@ import os
 import re
 import time
 import calendar
+import unicornhat as unicorn
 
 from cs50 import SQL
 from flask import Flask, flash, jsonify, redirect, render_template, request, session
@@ -56,6 +57,8 @@ def index():
 
     jsactivity = jsonify(activity_dict)
     print(jsactivity)
+
+    unicorn_simple()
 
     return render_template("index.html", username=username, activity_dict=activity_dict)
 
