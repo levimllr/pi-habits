@@ -1,5 +1,9 @@
 import requests
+import time
 import urllib.parse
+
+import unicornhat as unicorn
+
 
 from flask import redirect, render_template, request, session
 from functools import wraps
@@ -33,29 +37,11 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
+def habit_light(adic):
+    unicorn.brightness(0.7)
+    unicorn.set_pixel(3, 0, 0, 64, 0)
+    unicorn.set_pixel(2, 0, 0, 128, 0)
+    unicorn.set_pixel(1, 0, 0, 192, 0)
+    unicorn.set_pixel(0, 0, 0, 255, 0)
+    unicorn.show()
 
-def lookup(symbol):
-    """Look up quote for symbol."""
-
-    # Contact API
-    try:
-        response = requests.get(f"https://api.iextrading.com/1.0/stock/{urllib.parse.quote_plus(symbol)}/quote")
-        response.raise_for_status()
-    except requests.RequestException:
-        return None
-
-    # Parse response
-    try:
-        quote = response.json()
-        return {
-            "name": quote["companyName"],
-            "price": float(quote["latestPrice"]),
-            "symbol": quote["symbol"]
-        }
-    except (KeyError, TypeError, ValueError):
-        return None
-
-
-def usd(value):
-    """Format value as USD."""
-    return f"${value:,.2f}"
