@@ -4,6 +4,7 @@ import stat
 import threading
 import time
 import calendar
+import unicornhat as unicorn
 
 from cs50 import SQL
 from flask import Flask, flash, jsonify, redirect, render_template, request, session
@@ -13,9 +14,13 @@ from tempfile import mkdtemp
 from werkzeug.exceptions import default_exceptions
 from werkzeug.security import check_password_hash, generate_password_hash
 
+<<<<<<< HEAD
 import unicornhat as unicorn
 
 from helpers import apology, login_required, habit_light
+=======
+from helpers import apology, login_required
+>>>>>>> 80173f125389f241b106979aac5802f1c35cfacb
 
 # Configure application
 app = Flask(__name__)
@@ -38,7 +43,13 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 # Configure CS50 Library to use SQLite database
+<<<<<<< HEAD
 db = SQL("sqlite:////home/pi/PiHabits/pi-habits/habits.db")
+=======
+# Change this URL to the absolute or relative directory on your server!!!
+# Ex: "sqlite:////home/pi/pi-habits/habits.db"
+db = SQL("sqlite:///habits.db")
+>>>>>>> 80173f125389f241b106979aac5802f1c35cfacb
 
 @app.route("/")
 @login_required
@@ -61,7 +72,13 @@ def index():
 
     jsactivity = jsonify(activity_dict)
     print(jsactivity)
+<<<<<<< HEAD
 	
+=======
+
+    unicorn_simple()
+
+>>>>>>> 80173f125389f241b106979aac5802f1c35cfacb
     return render_template("index.html", username=username, activity_dict=activity_dict)
 
 
@@ -172,7 +189,7 @@ def login():
 
         # Query database for username
         rows = db.execute("SELECT * FROM users WHERE username = :username",
-                          username=request.form.get("username"))
+                        username = request.form.get("username"))
 
         # Ensure username exists and password is correct
         if len(rows) != 1 or not check_password_hash(rows[0]["hash"], request.form.get("password")):
