@@ -4,7 +4,6 @@ import stat
 import threading
 import time
 import calendar
-import unicornhat as unicorn
 
 from cs50 import SQL
 from flask import Flask, flash, jsonify, redirect, render_template, request, session
@@ -39,7 +38,6 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 # Configure CS50 Library to use SQLite database
-<<<<<<< HEAD
 db = SQL("sqlite:////home/pi/PiHabits/pi-habits/habits.db")
 
 @app.route("/")
@@ -63,13 +61,7 @@ def index():
 
     jsactivity = jsonify(activity_dict)
     print(jsactivity)
-<<<<<<< HEAD
 	
-=======
-
-    unicorn_simple()
-
->>>>>>> 80173f125389f241b106979aac5802f1c35cfacb
     return render_template("index.html", username=username, activity_dict=activity_dict)
 
 
@@ -180,7 +172,7 @@ def login():
 
         # Query database for username
         rows = db.execute("SELECT * FROM users WHERE username = :username",
-                        username = request.form.get("username"))
+                          username=request.form.get("username"))
 
         # Ensure username exists and password is correct
         if len(rows) != 1 or not check_password_hash(rows[0]["hash"], request.form.get("password")):

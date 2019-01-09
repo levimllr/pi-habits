@@ -1,7 +1,5 @@
 import os
 import re
-import stat
-import threading
 import time
 import calendar
 import unicornhat as unicorn
@@ -9,14 +7,11 @@ import unicornhat as unicorn
 from cs50 import SQL
 from flask import Flask, flash, jsonify, redirect, render_template, request, session
 from flask_session import Session
-from sys import exit
 from tempfile import mkdtemp
 from werkzeug.exceptions import default_exceptions
 from werkzeug.security import check_password_hash, generate_password_hash
 
-import unicornhat as unicorn
-
-from helpers import apology, login_required, habit_light
+from helpers import apology, login_required
 
 # Configure application
 app = Flask(__name__)
@@ -39,8 +34,9 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 # Configure CS50 Library to use SQLite database
-<<<<<<< HEAD
-db = SQL("sqlite:////home/pi/PiHabits/pi-habits/habits.db")
+# Change this URL to the absolute or relative directory on your server!!!
+# Ex: "sqlite:////home/pi/pi-habits/habits.db"
+db = SQL("sqlite:///habits.db")
 
 @app.route("/")
 @login_required
@@ -58,18 +54,12 @@ def index():
     for i in activityrows:
         activity_dict[str(i["time"])] = i["howmuch"]
     print(activity_dict)
-    
-    habit_light(activityrows)
 
     jsactivity = jsonify(activity_dict)
     print(jsactivity)
-<<<<<<< HEAD
-	
-=======
 
     unicorn_simple()
 
->>>>>>> 80173f125389f241b106979aac5802f1c35cfacb
     return render_template("index.html", username=username, activity_dict=activity_dict)
 
 

@@ -14,9 +14,13 @@ from tempfile import mkdtemp
 from werkzeug.exceptions import default_exceptions
 from werkzeug.security import check_password_hash, generate_password_hash
 
+<<<<<<< HEAD
 import unicornhat as unicorn
 
 from helpers import apology, login_required, habit_light
+=======
+from helpers import apology, login_required
+>>>>>>> 80173f125389f241b106979aac5802f1c35cfacb
 
 # Configure application
 app = Flask(__name__)
@@ -41,6 +45,11 @@ Session(app)
 # Configure CS50 Library to use SQLite database
 <<<<<<< HEAD
 db = SQL("sqlite:////home/pi/PiHabits/pi-habits/habits.db")
+=======
+# Change this URL to the absolute or relative directory on your server!!!
+# Ex: "sqlite:////home/pi/pi-habits/habits.db"
+db = SQL("sqlite:///habits.db")
+>>>>>>> 80173f125389f241b106979aac5802f1c35cfacb
 
 @app.route("/")
 @login_required
