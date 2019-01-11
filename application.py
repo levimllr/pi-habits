@@ -7,6 +7,7 @@ import calendar
 import unicornhat as unicorn
 
 from cs50 import SQL
+from datetime import datetime
 from flask import Flask, flash, jsonify, redirect, render_template, request, session
 from flask_session import Session
 from sys import exit
@@ -39,7 +40,6 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 # Configure CS50 Library to use SQLite database
-<<<<<<< HEAD
 db = SQL("sqlite:////home/pi/PiHabits/pi-habits/habits.db")
 
 @app.route("/")
@@ -63,13 +63,7 @@ def index():
 
     jsactivity = jsonify(activity_dict)
     print(jsactivity)
-<<<<<<< HEAD
-	
-=======
 
-    unicorn_simple()
-
->>>>>>> 80173f125389f241b106979aac5802f1c35cfacb
     return render_template("index.html", username=username, activity_dict=activity_dict)
 
 

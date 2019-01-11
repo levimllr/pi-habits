@@ -3,9 +3,7 @@ import time
 import urllib.parse
 import unicornhat as unicorn
 
-import unicornhat as unicorn
-
-
+from datetime import datetime
 from flask import redirect, render_template, request, session
 from functools import wraps
 from random import randint
@@ -40,9 +38,20 @@ def login_required(f):
     return decorated_function
 
 def habit_light(adic):
-    unicorn.brightness(0.7)
-    unicorn.set_pixel(3, 0, 0, 64, 0)
-    unicorn.set_pixel(2, 0, 0, 128, 0)
-    unicorn.set_pixel(1, 0, 0, 192, 0)
-    unicorn.set_pixel(0, 0, 0, 255, 0)
-    unicorn.show()
+	unicorn.brightness(0.5)
+	utctopstsec = 28800
+	print(len(adic))
+	print(adic[0]["time"])
+	habitgrid = []
+	
+	for i in adic:
+		print(i)
+		habitgrid.append([int(datetime.utcfromtimestamp(i["time"]-utctopstsec).strftime('%W')), int(datetime.utcfromtimestamp(i["time"]-utctopstsec).strftime('%w')), int(165*i["howmuch"]/6+90)])
+	
+	print(habitgrid)
+	
+	for j in habitgrid:
+		print(j)
+		unicorn.set_pixel(abs(j[0]-7), abs(j[1]-7), 0, j[2], 0)
+    
+	unicorn.show()
