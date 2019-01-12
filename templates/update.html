@@ -7,13 +7,14 @@
 <!-- form for updating habit activity-->
 {% block main %}
     <header>
-        Update your habit progress. What did you do today?
+        Update your habit progress here.
         <p></p>
+        Since last time, you accomplished your habit of {{ habit}}
     </header>
     <form action="/update" method="post">
         <div class="form-group">
             <input id="frequency" class="form-control" name="howmuch" placeholder="#" type="number"/>
-            <label for="frequency">Meals</label>
+            <label for="frequency">times today!</label>
         </div>
         <button class="btn btn-primary" type="submit">Update</button>
     </form>

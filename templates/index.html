@@ -5,9 +5,9 @@
 {% endblock %}
 
 {% block main %}
-    <header>Welcome back, {{ username }}! Way to develop new habits!</header>
+    <header>Welcome back, {{ username }}! Way to develop a new habit!</header>
 
-    <h4>Eat</h4>
+    <h4>{{ habit }}</h4>
     <div class="panel-body">
         <div id="cal-heatmap">
         </div>
@@ -43,6 +43,6 @@
 	    });
     </script>
 
-<a href="/add">Add</a>, <a href="/remove">remove</a>, or <a href="/update">update</a> habits.
+<a href="/add">Add</a> or <a href="/remove">remove</a> habits?
 
 {% endblock %}

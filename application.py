@@ -49,22 +49,28 @@ def index():
 
     userrows = db.execute("SELECT * FROM users WHERE id = :user_id", user_id=session["user_id"])
     username = userrows[0]['username']
+    
+    habitrows = db.execute("SELECT * FROM habits WHERE userid = :userid", userid=session["user_id"])
+    print(habitrows)
+    if len(habitrows) == 0:
+	    return redirect("/add")
+    else: habit = habitrows[0]['habit']
 
     activityrows = db.execute("SELECT * FROM activity WHERE userid = :userid", userid=session["user_id"])
-
     print(activityrows)
 
     activity_dict = {}
     for i in activityrows:
-        activity_dict[str(i["time"])] = i["howmuch"]
+	     activity_dict[str(i["time"])] = i["howmuch"]
     print(activity_dict)
     
-    habit_light(activityrows)
-
+    if len(activityrows) > 0:
+	    habit_light(activityrows)
+    
     jsactivity = jsonify(activity_dict)
     print(jsactivity)
 
-    return render_template("index.html", username=username, activity_dict=activity_dict)
+    return render_template("index.html", username=username, habit=habit, activity_dict=activity_dict)
 
 
 @app.route("/add", methods=["GET", "POST"])
@@ -115,6 +121,7 @@ def update():
     if request.method == "POST":
 
         habitinfo = db.execute("SELECT * FROM habits WHERE userid = :user_id", user_id=session["user_id"])
+        
         habit = habitinfo[0]["habit"]
 
         howmuch = int(request.form.get("howmuch"))
@@ -130,9 +137,10 @@ def update():
         return redirect("/")
 
     else:
-        habits = db.execute("SELECT * FROM habits WHERE userid = :user_id", user_id=session["user_id"])
-        print(habits)
-        return render_template("update.html", habits=habits)
+        habitrows = db.execute("SELECT * FROM habits WHERE userid = :user_id", user_id=session["user_id"])
+        print(habitrows)
+        habit = habitrows[0]["habit"]
+        return render_template("update.html", habit=habit)
 
 @app.route("/history")
 @login_required

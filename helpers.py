@@ -52,6 +52,8 @@ def habit_light(adic):
 	
 	for j in habitgrid:
 		print(j)
+		if j[2] > 255:
+			j[2] = 255
 		unicorn.set_pixel(abs(j[0]-7), abs(j[1]-7), 0, j[2], 0)
     
 	unicorn.show()
