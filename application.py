@@ -268,6 +268,9 @@ def register():
     else:
         return render_template("register.html")
 
+if __name__ == '__main__':
+    app.run(debug=True, port=80, host='192.168.0.19')
+    #app.run(debug=True, port=80, host='0.0.0.0')
 
 def errorhandler(e):
     """Handle error"""
