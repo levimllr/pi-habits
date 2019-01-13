@@ -46,14 +46,16 @@ db = SQL("sqlite:////home/pi/PiHabits/pi-habits/habits.db")
 @login_required
 def index():
     """Show habit heatmaps"""
-
+	
+    unicorn.off()
+	
     userrows = db.execute("SELECT * FROM users WHERE id = :user_id", user_id=session["user_id"])
     username = userrows[0]['username']
     
     habitrows = db.execute("SELECT * FROM habits WHERE userid = :userid", userid=session["user_id"])
     print(habitrows)
     if len(habitrows) == 0:
-	    return redirect("/add")
+        return redirect("/add")
     else: 
         habit = habitrows[0]['habit']
         most = habitrows[0]['frequency']
