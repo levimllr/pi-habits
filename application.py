@@ -54,7 +54,9 @@ def index():
     print(habitrows)
     if len(habitrows) == 0:
 	    return redirect("/add")
-    else: habit = habitrows[0]['habit']
+    else: 
+        habit = habitrows[0]['habit']
+        most = habitrows[0]['frequency']
 
     activityrows = db.execute("SELECT * FROM activity WHERE userid = :userid", userid=session["user_id"])
     print(activityrows)
@@ -65,7 +67,7 @@ def index():
     print(activity_dict)
     
     if len(activityrows) > 0:
-	    habit_light(activityrows)
+	    habit_light(activityrows, most)
     
     jsactivity = jsonify(activity_dict)
     print(jsactivity)

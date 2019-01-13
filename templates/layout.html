@@ -11,7 +11,7 @@
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
 
-        <link href="/static/styles.css" rel="stylesheet"/>
+        <link rel="stylesheet" href="/static/styles.css" />
 
         <!-- Optional JavaScript -->
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -25,7 +25,8 @@
 
         <!-- Cal-HeatMap for GitHub-esque activity heat maps -->
         <script type="text/javascript" src="https://cdn.jsdelivr.net/cal-heatmap/3.3.10/cal-heatmap.min.js"></script>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/cal-heatmap/3.3.10/cal-heatmap.css" />
+        <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/cal-heatmap/3.3.10/cal-heatmap.css" /> -->
+        <link rel="stylesheet" href="/static/cal-heatmap.css" />
 
         <title>PiHabits: {% block title %}{% endblock %}</title>
 
@@ -63,13 +64,13 @@
             </header>
         {% endif %}
 
-        <mainclass="container p-8">
+        <main class="container p-5">
             {% block main %}{% endblock %}
         </main>
 
         <!-- <footer class="small text-center text-muted">
             Site template provided for free by <a href="https://cs50.harvard.edu/college/">C50</a>.
-        </footer>
+        </footer> -->
 
     </body>
 

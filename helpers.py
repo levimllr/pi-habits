@@ -37,7 +37,8 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
-def habit_light(adic):
+def habit_light(adic, most):
+	unicorn.off()
 	unicorn.brightness(0.5)
 	utctopstsec = 28800
 	print(len(adic))
@@ -46,7 +47,7 @@ def habit_light(adic):
 	
 	for i in adic:
 		print(i)
-		habitgrid.append([int(datetime.utcfromtimestamp(i["time"]-utctopstsec).strftime('%W')), int(datetime.utcfromtimestamp(i["time"]-utctopstsec).strftime('%w')), int(165*i["howmuch"]/6+90)])
+		habitgrid.append([int(datetime.utcfromtimestamp(i["time"]-utctopstsec).strftime('%W')), int(datetime.utcfromtimestamp(i["time"]-utctopstsec).strftime('%w')), int(165*i["howmuch"]/most+90)])
 	
 	print(habitgrid)
 	

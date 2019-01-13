@@ -31,6 +31,16 @@ main .form-control
     width: auto;
 }
 
+main .center-screen
+{
+	/* center div on the screen */
+	justify-content: center;
+	align-items: center;
+	margin-left: auto; 
+	margin-right: auto;
+	text-align: center;
+}
+
 main
 {
     /* scroll horizontally as needed */
