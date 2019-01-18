@@ -47,7 +47,7 @@ def habit_light(adic, most):
 	
 	for i in adic:
 		print(i)
-		habitgrid.append([int(datetime.utcfromtimestamp(i["time"]-utctopstsec).strftime('%W')), int(datetime.utcfromtimestamp(i["time"]-utctopstsec).strftime('%w')), int(165*i["howmuch"]/most+90)])
+		habitgrid.append([int(datetime.utcfromtimestamp(i["time"]-utctopstsec).strftime('%U')), int(datetime.utcfromtimestamp(i["time"]-utctopstsec).strftime('%w')), int(165*i["howmuch"]/most+90)])
 	
 	print(habitgrid)
 	
@@ -56,5 +56,13 @@ def habit_light(adic, most):
 		if j[2] > 255:
 			j[2] = 255
 		unicorn.set_pixel(abs(j[0]-7), abs(j[1]-7), 0, j[2], 0)
+	
+	for k in range(0,7):
+		streak = 1
+		for l in range(0,8):
+			if unicorn.get_pixel(k, l) == 0:
+				streak = 0
+		if streak == 0:
+			unicorn.set_pixel(k, 0, 255, 255, 255)
     
 	unicorn.show()
