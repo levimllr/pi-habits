@@ -57,12 +57,13 @@ def habit_light(adic, most):
 			j[2] = 255
 		unicorn.set_pixel(abs(j[0]-7), abs(j[1]-7), 0, j[2], 0)
 	
-	for k in range(0,7):
+	for k in range(0,8):
 		streak = 1
-		for l in range(0,8):
-			if unicorn.get_pixel(k, l) == 0:
+		for l in range(1,8):
+			print(unicorn.get_pixel(k, l) == (0, 0, 0))
+			if unicorn.get_pixel(k, l) == (0, 0, 0):
 				streak = 0
-		if streak == 0:
+		if streak == 1:
 			unicorn.set_pixel(k, 0, 255, 255, 255)
     
 	unicorn.show()
