@@ -6,7 +6,6 @@ import time
 import calendar
 import unicornhat as unicorn
 
-# Comment/commit test.
 from cs50 import SQL
 from datetime import datetime
 from flask import Flask, flash, jsonify, redirect, render_template, request, session
@@ -46,34 +45,44 @@ db = SQL("sqlite:////home/pi/PiHabits/pi-habits/habits.db")
 @app.route("/")
 @login_required
 def index():
-    """Show habit heatmaps"""
-	
+    """
+    Show habit heatmaps.
+    """
+
+    # Clear the UnicornHAT display.	
     unicorn.off()
-	
+    
+    # Access user information from database.
     userrows = db.execute("SELECT * FROM users WHERE id = :user_id", user_id=session["user_id"])
     username = userrows[0]['username']
     
+    # Grab habit information from database.
     habitrows = db.execute("SELECT * FROM habits WHERE userid = :userid", userid=session["user_id"])
-    print(habitrows)
+    # print(habitrows)
+    # Redirect user to add a habit if no habit information exists.
     if len(habitrows) == 0:
         return redirect("/add")
+    # Grab habit name and daily goal from data.
     else: 
         habit = habitrows[0]['habit']
         most = habitrows[0]['frequency']
 
+    # Grab all user activity.
     activityrows = db.execute("SELECT * FROM activity WHERE userid = :userid", userid=session["user_id"])
     print(activityrows)
 
+    # Convert activity from SQL database into jsonify-friendly format.
     activity_dict = {}
     for i in activityrows:
 	     activity_dict[str(i["time"])] = i["howmuch"]
-    print(activity_dict)
+    # print(activity_dict)
     
+    # If there is activity, run habit_light function to turn on corresponding LEDs on UnicornHAT.
     if len(activityrows) > 0:
 	    habit_light(activityrows, most)
     
     jsactivity = jsonify(activity_dict)
-    print(jsactivity)
+    # print(jsactivity)
 
     return render_template("index.html", username=username, habit=habit, activity_dict=activity_dict)
 
