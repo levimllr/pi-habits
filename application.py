@@ -6,6 +6,7 @@ import time
 import calendar
 import unicornhat as unicorn
 
+# cs50 is a library from Harvard's famous introductory computer science course.
 from cs50 import SQL
 from datetime import datetime
 from flask import Flask, flash, jsonify, redirect, render_template, request, session
@@ -15,6 +16,7 @@ from tempfile import mkdtemp
 from werkzeug.exceptions import default_exceptions
 from werkzeug.security import check_password_hash, generate_password_hash
 
+# Unicorn HAT is an 8x8 LED grid that can interface with a Raspberry Pi. The unicornhat library controls its functions.
 import unicornhat as unicorn
 
 from helpers import apology, login_required, habit_light
